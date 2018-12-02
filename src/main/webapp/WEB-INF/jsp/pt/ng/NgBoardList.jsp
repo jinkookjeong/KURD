@@ -179,10 +179,10 @@ app.config(function($mdDateLocaleProvider) {
    }
 });
 
-
 </script> 
 
-<div ng-app="ngBoardListApp" ng-controller="ngBoardListController">
+<div id="ngBoardListApp" ng-app="ngBoardListApp" ng-controller="ngBoardListController">
+
 <h4 class="con_tit"><span>Sample(Spring MVC 5 + Spring Security 5 + REST + AngularJS)</h4> 
 <!--  <span ng-click="logout()" class="al_r">Logout</span></span> -->
 	<div class="table_area1"> 
