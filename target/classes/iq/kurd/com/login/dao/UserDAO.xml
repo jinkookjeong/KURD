@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iq.kurd.com.login.dao.UserDAO">
+
+<resultMap id="selectUserResult" type="iq.kurd.com.login.vo.UserVO">
+	    <result property="userId" column="USER_ID" />
+	    <result property="password" column="PASSWORD" />
+	    <result property="nid" column="NID" />
+	    <result property="deptNo" column="DEPT_NO" />
+	    <result property="deptNm" column="DEPT_NM" />
+		<result property="celNo" column="CEL_NO" />				
+</resultMap>
+<select id="selectUser" parameterType="iq.kurd.pt.ng.vo.NgBoardVO" resultMap="selectUserResult">
+		SELECT
+			   USER_ID,
+			   PASSWORD,
+			   MAST_ID,		
+			   NID,
+			   DEPT_NO, 
+			   DEPT_NM, 
+			   CEL_NO
+	      FROM DB2COM.USER
+		  WHERE
+			USER_ID = #{userId}
+</select>
+
+<resultMap id="selectUserAuthListResult" type="iq.kurd.com.login.vo.UserVO">
+	    <result property="userId" column="USER_ID" />
+	    <result property="password" column="PASSWORD" />
+	    <result property="nid" column="NID" />
+	    <result property="deptNo" column="DEPT_NO" />
+	    <result property="deptNm" column="DEPT_NM" />
+		<result property="celNo" column="CEL_NO" />
+		<result property="authCd" column="AUTH_CD" />
+		<result property="authNm" column="AUTH_NM" />		
+</resultMap>
+<select id="selectUserAuthList" parameterType="iq.kurd.pt.ng.vo.NgBoardVO" resultMap="selectUserAuthListResult">
+		SELECT
+			   U.USER_ID,
+			   U.PASSWORD,
+			   U.MAST_ID,		
+			   U.NID,
+			   U.DEPT_NO, 
+			   U.DEPT_NM, 
+			   U.CEL_NO,
+ 			   A.AUTH_CD,
+			   A.AUTH_NM
+	      FROM DB2COM.USER U
+			   LEFT OUTER JOIN DB2COM.USER_AUTH A ON U.USER_ID = A.USER_ID
+		  WHERE
+			U.USER_ID = #{userId}
+</select>
+</mapper>

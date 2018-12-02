@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iq.kurd.com.co.zip.dao.CoZipDAO">
+
+	<resultMap id="selectListPageCoZipResult" type="iq.kurd.com.co.zip.vo.CoZipQVO">
+		<result property="zipCode" column="ZIP_CODE"/>
+		<result property="addr1" column="ADDR1"/>
+		<result property="addr2" column="ADDR2"/>
+		<result property="addr3" column="ADDR3"/>
+	</resultMap>
+	<select id="selectListPageCoZip" parameterType="iq.kurd.com.co.zip.vo.CoZipSVO" resultMap="selectListPageCoZipResult" >
+			<![CDATA[
+			SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY INNER_TABLE.ZIP_CODE, INNER_TABLE.ADDR1, INNER_TABLE.ADDR2, INNER_TABLE.ADDR3) as ROW_SEQ, INNER_TABLE.* FROM(
+			
+			SELECT ZIP_CODE
+			         , ADDR1
+			         , ADDR2
+			         , ADDR3
+			  FROM COMN.CO_ZIP
+			 WHERE 1 = 1 
+			]]>
+			<if test="addr1 != null and addr1 !=''">
+				AND  addr1 = #{addr1}
+			</if>
+			<if test="addr2 != null and addr2 !=''">
+				AND  addr2 = #{addr2}
+			</if>
+			<if test="addr3 != null and addr3 !=''">
+				AND  addr3 = #{addr3}
+			</if>
+			
+			<![CDATA[
+			 ORDER BY ZIP_CODE, ADDR1, ADDR2, ADDR3
+			) INNER_TABLE ) WHERE ROW_SEQ BETWEEN ((#{currentPageNo} - 1) * #{recordCountPerPage} + 1) AND (#{currentPageNo} * #{recordCountPerPage})
+			]]>
+	</select>
+	
+	<select id="selectCountCoZip" parameterType="iq.kurd.com.co.zip.vo.CoZipSVO" resultType="int">
+			<![CDATA[
+			SELECT count(*) AS CNT FROM (
+			
+			SELECT ADDR3
+			  FROM COMN.CO_ZIP
+			 WHERE 1 = 1 
+			]]>
+			<if test="addr1 != null and addr1 !=''">
+				AND  addr1 = #{addr1}
+			</if>
+			<if test="addr2 != null and addr2 !=''">
+				AND  addr2 = #{addr2}
+			</if>
+			<if test="addr3 != null and addr3 !=''">
+				AND  addr3 = #{addr3}
+			</if>
+			<![CDATA[
+			) tableAlias
+			]]>
+	</select>
+	
+	<resultMap id="selectListAddr1Result" type="iq.kurd.com.co.zip.vo.CoZipQVO">
+		<result property="addr1" column="ADDR1"/>
+	</resultMap>
+	<select id="selectListAddr1" parameterType="iq.kurd.com.co.zip.vo.CoZipSVO" resultMap="selectListAddr1Result" >
+			<![CDATA[
+			SELECT DISTINCT ADDR1
+			  FROM COMN.CO_ZIP
+			 WHERE 1 = 1 
+			 ORDER BY ADDR1
+			]]>
+	</select>
+	
+	<resultMap id="selectListAddr2Result" type="iq.kurd.com.co.zip.vo.CoZipQVO">
+		<result property="addr1" column="ADDR1"/>
+		<result property="addr2" column="ADDR2"/>
+	</resultMap>
+	<select id="selectListAddr2" parameterType="iq.kurd.com.co.zip.vo.CoZipSVO" resultMap="selectListAddr2Result" >
+			<![CDATA[
+			SELECT DISTINCT ADDR1
+			         , ADDR2
+			  FROM COMN.CO_ZIP
+			 WHERE ADDR1 = #{addr1}
+			 ORDER BY ADDR1, ADDR2
+			]]>
+	</select>
+	
+	<resultMap id="selectListAddr3Result" type="iq.kurd.com.co.zip.vo.CoZipQVO">
+		<result property="addr1" column="ADDR1"/>
+		<result property="addr2" column="ADDR2"/>
+		<result property="addr3" column="ADDR3"/>
+	</resultMap>
+	<select id="selectListAddr3" parameterType="iq.kurd.com.co.zip.vo.CoZipSVO" resultMap="selectListAddr3Result" >
+			<![CDATA[
+			SELECT DISTINCT ADDR1
+			         , ADDR2
+			         , ADDR3
+			  FROM COMN.CO_ZIP
+			 WHERE ADDR1 = #{addr1}
+			    AND ADDR2 = #{addr2}
+			 ORDER BY ADDR1, ADDR2, ADDR3
+			]]>
+	</select>
+</mapper>

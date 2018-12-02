@@ -1,0 +1,512 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>KURD</groupId>
+  <artifactId>KURD</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <url>http://maven.apache.org</url>
+  
+    <properties>
+        <egovframework.rte.version>3.6.0</egovframework.rte.version>
+        <spring.version>5.1.3.RELEASE</spring.version>
+        <spring.security.version>5.1.2.RELEASE</spring.security.version>
+        <jackson.version>2.9.7</jackson.version>
+        
+        <tiles.version>3.0.8</tiles.version>      
+        <poi.version>4.0.0</poi.version>
+        <maven.test.skip>true</maven.test.skip>
+    </properties> 
+     
+    <repositories>
+        <repository>
+            <id>mvn2</id>
+            <url>http://repo1.maven.org/maven2/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+         
+        <repository>
+            <id>egovframe</id>
+            <url>http://www.egovframe.go.kr/maven/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>                
+    </repositories>
+
+    <dependencies>
+      	<dependency>
+ 		    <groupId>commons-dbcp</groupId>
+ 		    <artifactId>commons-dbcp</artifactId>
+ 		    <version>1.4</version>
+ 		</dependency> 
+ 		<dependency>
+ 		    <groupId>commons-pool</groupId>
+ 		    <artifactId>commons-pool</artifactId>
+ 		    <version>1.6</version>
+ 		</dependency>   
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.6</version>		
+		</dependency>
+        <dependency> 
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.11</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+      <dependency>
+          <groupId>commons-fileupload</groupId>
+          <artifactId>commons-fileupload</artifactId>
+          <version>1.3.3</version>
+      </dependency>
+      <dependency>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+          <version>1.2</version>
+      </dependency>	  
+	  <dependency>
+		 <groupId>javax.activation</groupId>
+		 <artifactId>activation</artifactId>
+		 <version>1.1.1</version>
+	  </dependency>
+
+<!--         이거고침 -->
+	   <dependency>
+		    <groupId>cglib</groupId>
+		    <artifactId>cglib</artifactId>
+		    <version>3.2.9</version>
+<!-- 		    <version>3.1</version> -->
+		</dependency>
+		
+<!--         이거고침 -->
+		<dependency>
+		    <groupId>org.apache.xmlbeans</groupId>
+		    <artifactId>xmlbeans</artifactId>
+		    <version>3.0.2</version>
+<!-- 		    <version>2.6.0</version> -->
+		</dependency>
+
+<!-- 		<dependency> -->
+<!-- 		    <groupId>junit</groupId> -->
+<!-- 		    <artifactId>junit</artifactId> -->
+<!-- 		    <version>4.9</version> -->
+<!-- 		    <scope>test</scope> -->
+<!-- 		</dependency> -->
+        
+        <!-- MariaDB JDBC Driver -->
+		<dependency>
+		    <groupId>org.mariadb.jdbc</groupId>
+		    <artifactId>mariadb-java-client</artifactId>
+		    <version>2.3.0</version>
+		</dependency>
+        
+        <!-- SQL Console log -->
+        <dependency>
+            <groupId>org.lazyluke</groupId>
+            <artifactId>log4jdbc-remix</artifactId>
+            <version>0.2.7</version>
+        </dependency>
+        
+<!--         이거 고침 -->
+		<dependency>
+		    <groupId>com.ibm.icu</groupId>
+		    <artifactId>icu4j</artifactId>
+		    <version>63.1</version>
+<!-- 		    <version>4.0.1</version> -->
+		</dependency>
+		
+        <!-- JSTL -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>  
+        
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+          </dependency>
+          
+        <dependency>
+          <groupId>egovframework.rte</groupId>
+          <artifactId>egovframework.rte.fdl.cmmn</artifactId>
+           <version>${egovframework.rte.version}</version>
+        </dependency>
+        
+        <dependency>
+          <groupId>egovframework.rte</groupId>
+          <artifactId>egovframework.rte.psl.dataaccess</artifactId>
+          <version>${egovframework.rte.version}</version>
+        </dependency>
+        
+        <dependency>
+          <groupId>egovframework.rte</groupId>
+          <artifactId>egovframework.rte.ptl.mvc</artifactId>
+          <version>${egovframework.rte.version}</version>
+        </dependency>
+
+		<!--StringFramework -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-webmvc</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-jdbc</artifactId>
+		     <version>${spring.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-orm</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-tx</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
+		
+
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        
+        <!-- Tiles layout -->        
+		<dependency>
+		    <groupId>org.apache.tiles</groupId>
+		    <artifactId>tiles-extras</artifactId>
+		    <version>${tiles.version}</version>
+		</dependency> 
+		
+		<dependency>
+		    <groupId>org.apache.tiles</groupId>
+		    <artifactId>tiles-servlet</artifactId>
+		    <version>${tiles.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.tiles</groupId>
+		    <artifactId>tiles-jsp</artifactId>
+		    <version>${tiles.version}</version>
+		</dependency>
+
+		<!-- Json Jackson -->
+		<dependency>
+		    <groupId>org.codehaus.jackson</groupId>
+		    <artifactId>jackson-mapper-asl</artifactId>
+		    <version>1.9.13</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>${jackson.version}</version>    
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>${jackson.version}</version>
+		</dependency> 
+        
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib-ext-spring</artifactId>
+            <version>1.0.2</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>servlet-api</artifactId>
+                    <groupId>javax.servlet</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- Json -->
+        
+        <!-- for Junit -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+             <version>${spring.version}</version>
+        </dependency>
+        
+         <!-- validator TokenStream -->
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+         
+        <!-- excel -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+      
+		<!-- java servlet -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+		<dependency>
+		    <groupId>javax.servlet.jsp</groupId>
+		    <artifactId>javax.servlet.jsp-api</artifactId>
+		    <version>2.3.3</version>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.jcraft</groupId>
+		    <artifactId>jsch</artifactId>
+		    <version>0.1.54</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		    <version>2.8.5</version>
+		</dependency>
+		
+		<!-- lombok -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.18.4</version>
+		    <scope>provided</scope>
+		</dependency>
+        
+     <!-- WEB-INF/lib 아래에서 사용되는것들 -->
+       <dependency>
+          <groupId>iq.kurd</groupId>
+          <artifactId>ojdbc</artifactId>
+          <version>6</version>
+          <scope>system</scope>
+          <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ojdbc-6.jar</systemPath>
+        </dependency>               
+        <dependency>
+            <groupId>iq.kurd</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/mail.jar</systemPath>
+        </dependency>       
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>4.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/asm-4.2.jar</systemPath>
+        </dependency>        
+        <dependency>
+            <groupId>iq.kurd</groupId>
+            <artifactId>xmlparser2</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/xmlparserv2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>iq.kurd</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.7</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/junit-4.7.jar</systemPath>
+        </dependency>        
+         <dependency>
+            <groupId>iq.kurd</groupId>
+            <artifactId>pmd</artifactId>
+            <version>4.7</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/pmd-5.0.4.jar</systemPath>
+        </dependency>
+        
+		<dependency>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-antrun-plugin</artifactId>
+		    <version>1.8</version>
+		</dependency>	
+    </dependencies>
+
+
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <plugins> 
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <encoding>UTF-8</encoding>
+        </configuration> 
+      </plugin>      
+      <plugin> 
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.2</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>          
+      <plugin> 
+          <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.1.0</version>
+            <dependencies>
+            <dependency>
+                <groupId>org.apache.maven.shared</groupId>
+                <artifactId>maven-filtering</artifactId>
+                <version>3.1.1</version>
+            </dependency>
+          </dependencies>
+      </plugin>      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+	        <rulesets>                      
+	         <ruleset>${project.basedir}/build_script/EgovInspectionRules_kor-3.5.xml</ruleset>
+	        </rulesets>
+	        <sourceEncoding>UTF-8</sourceEncoding>
+	        <targetJdk>1.8</targetJdk>
+        </configuration>
+      </plugin>
+  </plugins>
+  </build>
+</project>
+
+<!--  정상처리되는거 -->
+<!--   <build> -->
+<!--     <sourceDirectory>src/main/java</sourceDirectory> -->
+<!--     <testSourceDirectory>src/test/java</testSourceDirectory> -->
+<!--     <plugins>  -->
+<!--       <plugin> -->
+<!--         <artifactId>maven-compiler-plugin</artifactId> -->
+<!--         <version>3.3</version> -->
+<!--         <configuration> -->
+<!--           <source>1.8</source> -->
+<!--           <target>1.8</target> -->
+<!--           <encoding>UTF-8</encoding> -->
+<!--         </configuration> -->
+<!--       </plugin>       -->
+<!--       <plugin>  -->
+<!--         <artifactId>maven-war-plugin</artifactId> -->
+<!--         <version>2.6</version> -->
+<!--         <configuration> -->
+<!--           <failOnMissingWebXml>false</failOnMissingWebXml> -->
+<!--         </configuration> -->
+<!--       </plugin>    -->
+<!--       <plugin> -->
+<!--           <groupId>org.apache.maven.plugins</groupId> -->
+<!--             <artifactId>maven-resources-plugin</artifactId> -->
+<!--             <version>2.7</version> -->
+<!--             <dependencies> -->
+<!--             <dependency> -->
+<!--                 <groupId>org.apache.maven.shared</groupId> -->
+<!--                 <artifactId>maven-filtering</artifactId> -->
+<!--                 <version>1.3</version> -->
+<!--             </dependency> -->
+<!--           </dependencies> -->
+<!--        </plugin> -->
+<!--       <plugin> -->
+<!--         <groupId>org.apache.maven.plugins</groupId> -->
+<!--         <artifactId>maven-pmd-plugin</artifactId> -->
+<!--         <version>3.6</version> -->
+<!--         <configuration> -->
+<!-- 	        <rulesets>                       -->
+<!-- 	         <ruleset>${project.basedir}/build_script/EgovInspectionRules_kor-3.5.xml</ruleset> -->
+<!-- 	        </rulesets> -->
+<!-- 	        <sourceEncoding>UTF-8</sourceEncoding> -->
+<!-- 	        <targetJdk>1.8</targetJdk> -->
+<!--         </configuration> -->
+<!--       </plugin> -->
+<!--   </plugins> -->
+<!--   </build> -->
+

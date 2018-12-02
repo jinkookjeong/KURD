@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+
+<project default="main" basedir=".">
+	<property file="./build.properties"/>
+	<target name="main"> 
+		<echo message="DEPLPOY start" />
+		
+		<antcall target="copy-target-app" />
+		<antcall target="copy-target-docs" />
+		
+		<!--
+		<antcall target="shutdown-tomcat" />
+		<antcall target="copy-target-dev-app" />		
+		<antcall target="startup-tomcat" />
+		-->
+		
+		<!--
+		<antcall target="ssh-copy-target-app" />	
+		<antcall target="ssh-startup-tomcat" />
+		-->
+		
+		<echo message="DEPLPOY end" />
+	</target>
+
+	
+	<!-- java 와 html 한곳에서 -->	
+	<target name="copy-target-dev-app">
+		
+		<echo message="delete-target-dev-app src start"/>
+		<delete dir="${deploy_target_app}" />
+			
+		<echo message="copy-target-dev-app src start"/>
+		<copy todir="${deploy_target_app}" overwrite="true">
+			<fileset dir="../target/${project_name}">
+			</fileset>
+		</copy>
+		<echo message="copy-target-dev-app src end"/>
+	</target>
+	
+	<!-- java 와 html 분리 -->	
+	<target name="copy-target-app">
+			<echo message="copy-target-app start"/>
+		    
+		    <echo message="delete-target-app start"/>
+		    <delete dir="${deploy_target_app}" />
+		
+		    <echo message="copy-target-app start"/>		
+			<copy todir="${deploy_target_app}" overwrite="true">
+				<fileset dir="../target/${project_name}">
+					<include name="WEB-INF/**"/>
+					<include name="*.jsp"/>
+				</fileset>
+			</copy>
+	
+		    <!--
+   		    <copydir src="../target/classes" dest="${deploy_target_app}/WEB-INF" />
+   		    --> 
+
+			<echo message="copy-target-app end"/>
+	</target>
+	
+	<!-- java 와 html 분리 -->	
+	<target name="copy-target-docs">
+		
+		<echo message="delete-target-docs start"/>
+		<delete dir="${deploy_target_doc}" />
+		
+		<echo message="copy-target-docs start"/>
+		<copy todir="${deploy_target_doc}/" overwrite="true">
+			<fileset dir="../target/${project_name}/">
+				<exclude name="WEB-INF/**"/>
+				<exclude name="*.jsp"/>
+			</fileset>
+		</copy>
+		<echo message="copy-target-docs end"/>
+	</target>
+	
+	
+	
+	<target name="shutdown-tomcat">
+		<echo message="Tomcat-down"/>
+		<exec executable="${tomcat_path}/shutdown.bat" dir="${tomcat_path}"  spawn="true">
+		</exec>
+	</target> 
+	
+	<target name="startup-tomcat">
+			<echo message="Tomcat-start"/>
+			<exec executable="${tomcat_path}/startup.bat" dir="${tomcat_path}"  spawn="true">
+				<env key="BUILD_ID" value="dontKillMe"/>
+			</exec>
+	</target> 
+		
+	
+	<!-- 서버가 물리적으로 떨어져있어 SSH로 접속해야될때 -->
+	<target name="ssh-copy-target-app">
+		<echo message="ssh copy-target-app start"/>
+
+		<sshexec host="192.168.5.131"
+	  	   failonerror="false"
+	       trust="yes"
+	       username="tomcat7"
+	       password="tom!002"
+	       command="rm -rf /home/tomcat7/target/*"
+		/>
+
+		<scp todir="tomcat7:tom!002@192.168.5.131:/home/tomcat7/target/"
+			 port="22"
+		     verbose="yes"
+		     trust="yes">
+			<fileset dir="../target/${project_name}/">
+			</fileset>
+		</scp>
+
+		<echo message="ssh copy-target-app end"/>
+	</target>
+	
+	
+	<target name="ssh-startup-tomcat">
+	  <echo message="startup.sh" /> 
+	  <sshexec host="192.168.5.131" failonerror="false" trust="yes" username="tomcat7" password="tom!002" command="/opt/was/tom_exms/bin/startup.sh" /> 
+	 </target>
+	
+		
+</project>

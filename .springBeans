@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.9.5.201807030714-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+	</configs>
+	<autoconfigs>
+		<config>src/main/resources/iq/kurd/spring/context-datasource.xml</config>
+		<config>src/main/resources/iq/kurd/springmvc/context-servlet.xml</config>
+		<config>src/main/resources/iq/kurd/spring/context-transaction.xml</config>
+		<config>src/main/resources/iq/kurd/spring/context-common.xml</config>
+		<config>src/main/resources/iq/kurd/spring/context-validator.xml</config>
+		<config>src/main/resources/iq/kurd/spring/context-root.xml</config>
+		<config>src/main/resources/iq/kurd/spring/context-aspect.xml</config>
+	</autoconfigs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

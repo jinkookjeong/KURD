@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iq.kurd.pt.ng.dao.NgBoardDAO">
+
+	<select id="selectSampleBoardNgListCnt" parameterType="iq.kurd.pt.ng.vo.NgBoardVO" resultType="int">
+	<![CDATA[
+		SELECT 
+		   COUNT(1) AS CNT
+		FROM DB2COM.SAMPLE_NG_BOARD
+		WHERE 1 = 1
+	]]>
+		<if test="tendNo != ''  and tendNo != null ">
+				 <![CDATA[
+				AND UPPER(TEND_NO)  LIKE  UPPER( CONCAT('%',#{tendNo},'%')) 
+				]]>
+		</if>
+		<if test="tendNm != ''  and tendNm != null ">
+				 <![CDATA[
+				AND UPPER(TEND_NM)  LIKE  UPPER( CONCAT('%',#{tendNm},'%')) 
+				]]>
+		</if>		
+		<if test="title != ''  and title != null ">
+				 <![CDATA[
+				AND UPPER(TITLE)  LIKE  UPPER( CONCAT('%',#{title},'%')) 
+				]]>
+		</if>
+		<if test="status != ''  and status != null ">
+				<if test='status != "ALL"'>
+					 <![CDATA[
+					AND UPPER(STATUS)  LIKE UPPER( CONCAT('%',#{status},'%'))
+					]]>
+				</if>
+		</if>		
+		<if test="id != ''  and id != null ">
+				 <![CDATA[
+				AND UPPER(ID) LIKE UPPER( CONCAT('%',#{id},'%'))  
+				]]>
+		</if>
+		<if test="toUserId != ''  and toUserId != null ">
+				 <![CDATA[
+				AND UPPER(TO_USER_ID) LIKE UPPER( CONCAT('%',#{toUserId},'%'))  
+				]]>
+		</if>
+		<if test="startDate != ''  and startDate != null and endDate != ''  and endDate != null ">
+				 <![CDATA[
+			     	AND WDATE BETWEEN ADDTIME(TIMESTAMP(#{startDate}), '00:00:00')
+	       			              AND ADDTIME(TIMESTAMP(#{endDate}), '23:59:59')
+				]]>
+		</if>
+	</select>
+
+	<resultMap id="selectSampleBoardNgListResult" type="iq.kurd.pt.ng.vo.NgBoardVO">
+	    <result property="tendNo" column="TEND_NO" />
+	    <result property="tendSeq" column="TEND_SEQ" />
+	    <result property="tendNm" column="TEND_NM" />
+	    <result property="tendType" column="TEND_TYPE" />
+	    <result property="rownum" column="ROWNUM" />
+		<result property="title" column="TITLE" />
+		<result property="contents" column="CONTENTS" />
+		<result property="id" column="ID" />
+		<result property="hit" column="HIT" />
+		<result property="wdate" column="WDATE" />
+		<result property="status" column="STATUS" />
+	</resultMap>
+	<select id="selectSampleBoardNgList" parameterType="iq.kurd.pt.ng.vo.NgBoardVO" resultMap="selectSampleBoardNgListResult">
+	<![CDATA[
+	SELECT T.* FROM (
+		SELECT
+			   TEND_NO,
+			   TEND_SEQ,
+			   TEND_NM,		
+			   TEND_TYPE,
+			   TITLE, 
+			   CONTENTS, 
+			   ID, 
+			   HIT, 
+			   WDATE,
+			   STATUS,
+			   @ROWNUM := @ROWNUM + 1 AS ROWNUM 			   
+		   FROM DB2COM.SAMPLE_NG_BOARD,
+		   (SELECT @ROWNUM := 0) R 
+		  WHERE 1=1
+		  ]]>
+		   <if test="tendNo != ''  and tendNo != null ">
+				 <![CDATA[
+				AND UPPER(TEND_NO)  LIKE  UPPER( CONCAT('%',#{tendNo},'%')) 
+				]]>
+			</if>
+			<if test="tendNm != ''  and tendNm != null ">
+					 <![CDATA[
+					AND UPPER(TEND_NM)  LIKE  UPPER( CONCAT('%',#{tendNm},'%')) 
+					]]>
+			</if>		
+			<if test="title != ''  and title != null ">
+					 <![CDATA[
+					AND UPPER(TITLE)  LIKE  UPPER( CONCAT('%',#{title},'%')) 
+					]]>
+			</if>						
+			<if test="status != ''  and status != null ">
+				<if test='status != "ALL"'>
+					 <![CDATA[
+					AND UPPER(STATUS)  LIKE UPPER( CONCAT('%',#{status},'%'))
+					]]>
+				</if>
+			</if>			
+			<if test="id != ''  and id != null ">
+					 <![CDATA[
+					AND UPPER(ID) LIKE UPPER( CONCAT('%',#{id},'%'))  
+					]]>
+			</if>
+			<if test="toUserId != ''  and toUserId != null ">
+					 <![CDATA[
+					AND UPPER(TO_USER_ID) LIKE UPPER( CONCAT('%',#{toUserId},'%'))  
+					]]>
+			</if>
+			<if test="startDate != ''  and startDate != null and endDate != ''  and endDate != null ">
+					 <![CDATA[
+				     	AND WDATE BETWEEN ADDTIME(TIMESTAMP(#{startDate}), '00:00:00')
+		       			              AND ADDTIME(TIMESTAMP(#{endDate}), '23:59:59')
+					]]>
+			</if>
+		<![CDATA[
+			  ORDER BY WDATE DESC
+		]]>
+		) T		
+	</select>
+	
+	<resultMap  id="selectSampleBoardNgDetailResult" type="iq.kurd.pt.ng.vo.NgBoardVO">
+		<result property="tendNo" column="TEND_NO" />
+	    <result property="tendSeq" column="TEND_SEQ" />
+	    <result property="tendNm" column="TEND_NM" />
+	    <result property="fromUserId" column="FROM_USER_ID" />
+	    <result property="toUserId" column="TO_USER_ID" />
+	    <result property="title" column="TITLE"/>
+		<result property="contents" column="CONTENTS"/>
+		<result property="id" column="ID"/>
+		<result property="hit" column="HIT"/>
+		<result property="wdate" column="WDATE"/>
+		<result property="fileRefId" column="FILE_REF_ID" />
+		<result property="status" column="STATUS" />
+		<result property="tendType" column="TEND_TYPE" />
+		<result property="tendTypeNm" column="TEND_TYPE_NM" />
+	    <result property="rgtDt" column="RGT_DT" />
+	    <result property="modDt" column="MOD_DT" />
+	</resultMap>
+	<select id="selectSampleBoardNgDetail" parameterType="iq.kurd.pt.ng.vo.NgBoardVO"  resultMap="selectSampleBoardNgDetailResult">
+		SELECT
+		    TEND_NO, TEND_SEQ, TEND_NM, FROM_USER_ID, TO_USER_ID,  
+		    TITLE, CONTENTS, ID, HIT, WDATE, 
+		    STATUS, FILE_REF_ID,
+ 		    TEND_TYPE,		    
+  		   (SELECT CD_NM FROM DB2COM.CO_COMMON_CD WHERE CD = (SELECT TEND_TYPE FROM DB2COM.SAMPLE_NG_BOARD WHERE TEND_NO = #{tendNo} AND TEND_SEQ = #{tendSeq} )) AS TEND_TYPE_NM,	
+		    RGT_DT, MOD_DT
+		   FROM DB2COM.SAMPLE_NG_BOARD
+		   WHERE TEND_NO = #{tendNo}
+		     AND TEND_SEQ = #{tendSeq}
+	</select>
+
+	<update id="updateHitNgCnt" parameterType="iq.kurd.pt.ng.vo.NgBoardVO">
+	<![CDATA[
+		UPDATE DB2COM.SAMPLE_NG_BOARD
+					SET HIT = NVL(HIT, 0 ) + 1
+			 WHERE TEND_NO = #{tendNo}
+		       AND TEND_SEQ = #{tendSeq}
+	]]>
+	</update>
+
+	<update id="updateSampleNgBoard" parameterType="iq.kurd.pt.ng.vo.NgBoardVO">
+	<![CDATA[
+		UPDATE DB2COM.SAMPLE_NG_BOARD
+			     	SET 
+			     	    TEND_NM = #{tendNm},
+			     	    TEND_TYPE = #{tendType},
+			     	    TITLE = #{title},
+					    CONTENTS = #{contents},
+					    HIT = 0,
+					    STATUS = #{status},
+					    MOD_DT = CURRENT_TIMESTAMP					    
+			 WHERE TEND_NO = #{tendNo}
+		       AND TEND_SEQ = #{tendSeq}
+	]]>
+	</update>
+
+	<insert id="insertSampleNgBoard" parameterType="iq.kurd.pt.ng.vo.NgBoardVO" >
+		<selectKey resultType="String" keyProperty="tendSeq" order="BEFORE">
+			SELECT NVL(MAX((TEND_SEQ)),0) + 1 AS tendSeq
+			 FROM DB2COM.SAMPLE_NG_BOARD WHERE TEND_NO = #{tendNo} 
+		</selectKey>
+		INSERT INTO
+				  DB2COM.SAMPLE_NG_BOARD
+					(
+						TEND_NO,
+						TEND_SEQ,
+						TEND_NM,
+						FROM_USER_ID,
+						TO_USER_ID,
+						PAGE_ID,
+						TITLE,
+						CONTENTS,
+						ID,
+						HIT,
+						WDATE,
+						STATUS,
+						TEND_TYPE,
+						USE_YN,
+						FILE_REF_ID,
+						RGT_ID
+					) VALUES(
+						#{tendNo},
+						#{tendSeq},
+						#{tendNm},
+						#{fromUserId},
+						#{toUserId},
+						#{pageId},					
+						#{title},
+						#{contents},
+						#{id},
+						0,
+						CURRENT_TIMESTAMP,
+						#{status},
+						#{tendType},
+						'Y',
+						FN_FILEREFID(#{tendNo}),
+						#{fromUserId}
+					)
+	</insert>	
+	
+	<resultMap  id="selectFileRefIdResult" type="iq.kurd.pt.ng.vo.NgBoardVO">
+		<result property="fileRefId" column="FILE_REF_ID" />		
+	</resultMap>
+	<select id="selectFileRefId" parameterType="iq.kurd.pt.ng.vo.NgBoardVO"  resultMap="selectFileRefIdResult">
+	<![CDATA[
+		SELECT
+		    FILE_REF_ID
+		   FROM DB2COM.SAMPLE_NG_BOARD
+		   WHERE TEND_NO = #{tendNo}
+		     AND TEND_SEQ = #{tendSeq}
+	]]>
+	</select>
+	
+	<delete id="deleteSampleNgBoard" parameterType="iq.kurd.pt.ng.vo.NgBoardVO">
+	<![CDATA[
+		DELETE FROM DB2COM.SAMPLE_NG_BOARD
+			   WHERE TEND_NO = #{tendNo}
+		         AND TEND_SEQ = #{tendSeq}
+
+	]]>
+	</delete>
+
+<!--  Attachment Files -->
+	<insert id="insertFile" parameterType="iq.kurd.pt.ng.vo.NgFileVO" >
+		<selectKey resultType="int" keyProperty="fileSeq" order="BEFORE">
+			SELECT NVL(MAX(FILE_SEQ),0) +1 AS FIIE_NUM FROM DB2COM.SAMPLE_NG_CM_FILE 
+			   WHERE 1 = 1
+			<if test="userId != '' and userId != null">
+				<![CDATA[AND USER_ID = #{userId}]]>
+			</if>
+			<if test="pageId != '' and pageId != null">
+				<![CDATA[AND PAGE_ID = #{pageId}]]>
+			</if>
+			
+			<if test="fileRefId == '' or fileRefId == null">
+	           <![CDATA[AND (NVL(STATUS, 'N') = 'N'  or STATUS = '') ]]>
+	           <![CDATA[AND (NVL(FILE_REF_ID, '') = 'N' or FILE_REF_ID = '') ]]>
+	        </if>
+			<if test="fileRefId != '' and fileRefId != null">
+				<![CDATA[AND FILE_REF_ID = #{fileRefId}]]>
+			</if>
+		</selectKey>
+		INSERT INTO
+		DB2COM.SAMPLE_NG_CM_FILE
+		(
+			  USER_ID
+			, PAGE_ID
+			, FILE_UUID
+			, FILE_SEQ
+			, ORIGIN_FILE_NM
+			, PHY_FILE_NM
+			, PHY_URL_PATH
+			, EXT
+			, FILE_SIZE
+			, FILE_REF_ID
+			, REQ_IP
+			, DEL_YN			
+		)
+		VALUES (
+			  #{userId}
+			, #{pageId}
+			, #{fileUuid}			
+			, #{fileSeq}
+			, #{originFileNm}
+			, #{phyFileNm}
+			, #{phyUrlPath}
+			, #{ext}
+			, #{fileSize}
+			, #{fileRefId}
+			, #{reqIp}	
+			, 'N'		
+		)		
+	</insert>
+
+<!-- 파일 정보 1타입 초기 저장된 리스트 in Servlet / 마지막 최종 저장/송신할때 삭제할거 검색함 -->
+	<resultMap  id="selectFileListResult" type="iq.kurd.pt.ng.vo.NgFileVO">
+		<result property="fileUuid" column="FILE_UUID"/>
+		<result property="fileSeq" column="FILE_SEQ"/>
+		<result property="originFileNm" column="ORIGIN_FILE_NM"/>
+		<result property="phyFileNm" column="PHY_FILE_NM"/>
+		<result property="phyUrlPath" column="PHY_URL_PATH"/>
+		<result property="ext" column="EXT"/>
+		<result property="fileRefId" column="FILE_REF_ID"/>
+		<result property="fileSize" column="FILE_SIZE"/>
+		<result property="status" column="STATUS"/>
+	</resultMap>
+    <select id="selectFileList" parameterType="iq.kurd.pt.ng.vo.NgFileVO"  resultMap="selectFileListResult">
+		SELECT
+              FILE_UUID
+			, FILE_SEQ
+			, ORIGIN_FILE_NM
+			, PHY_FILE_NM
+			, PHY_URL_PATH
+			, EXT
+			, FILE_REF_ID
+			, FILE_SIZE
+			, STATUS
+        FROM
+            DB2COM.SAMPLE_NG_CM_FILE
+         WHERE 1 = 1
+        <if test='delYn != null and delYn.equals("N")'>
+			<![CDATA[AND DEL_YN = 'N']]>
+	 	</if>
+		<if test="userId != '' and userId != null">
+			<![CDATA[AND USER_ID = #{userId}]]>
+		</if>
+		<if test="pageId != '' and pageId != null">
+			<![CDATA[AND PAGE_ID = #{pageId}]]>
+		</if>
+		<if test="fileUuid != '' and fileUuid != null">
+			<![CDATA[AND FILE_UUID = #{fileUuid}]]>
+		</if>
+		 <if test="fileRefId == '' or fileRefId == null">
+           <![CDATA[AND (NVL(STATUS, 'N') = 'N'  or STATUS = '') ]]>
+           <![CDATA[AND (NVL(FILE_REF_ID, '') = 'N' or FILE_REF_ID = '') ]]>
+         </if>
+		<if test="fileRefId != '' and fileRefId != null">
+			<![CDATA[AND FILE_REF_ID = #{fileRefId}]]>
+		</if>
+		<if test="status != '' and status != null">
+		    <![CDATA[AND STATUS IN ('Saved','Sent')]]>
+		 </if>
+		 
+		<if test='delYn != null and delYn.equals("Y")'>
+			<![CDATA[AND DEL_YN = 'Y']]>
+			<![CDATA[OR (NVL(STATUS, 'N') = 'N'  or STATUS = '') ]]>
+		</if>
+		 
+	</select>
+	
+<!-- 파일 정보 2타입 리스트 업무 상세 화면에서 -->
+	<resultMap  id="selectFileListInDetailResult" type="iq.kurd.pt.ng.vo.NgFileVO">
+		<result property="fileUuid" column="FILE_UUID"/>
+		<result property="fileSeq" column="FILE_SEQ"/>
+		<result property="fileRefId" column="FILE_REF_ID"/>
+		<result property="originFileNm" column="ORIGIN_FILE_NM"/>
+		<result property="phyFileNm" column="PHY_FILE_NM"/>
+		<result property="phyUrlPath" column="PHY_URL_PATH"/>
+		<result property="ext" column="EXT"/>
+		<result property="fileSize" column="FILE_SIZE"/>
+		<result property="status" column="STATUS"/>
+		<result property="rownum" column="ROWNUM" />
+	</resultMap>
+    <select id="selectFileListInDetail" parameterType="iq.kurd.pt.ng.vo.NgBoardVO"  resultMap="selectFileListInDetailResult">
+     SELECT T.* FROM (
+		SELECT
+              FILE_UUID
+            , FILE_REF_ID
+			, ORIGIN_FILE_NM
+			, EXT
+			, FILE_SIZE
+			, @ROWNUM := @ROWNUM + 1 AS ROWNUM
+        FROM
+            DB2COM.SAMPLE_NG_CM_FILE,
+            (SELECT @ROWNUM := 0) R             
+         WHERE 1 = 1
+             AND FILE_REF_ID = #{fileRefId}
+<!-- 		<if test="fileRefId != '' and fileRefId != null"> -->
+<!-- 			<![CDATA[AND FILE_REF_ID = #{fileRefId}]]> -->
+<!-- 		</if> -->
+		 AND STATUS IN ('Saved','Sent')
+		 ORDER BY ROWNUM ASC
+		) T  
+	</select>
+	
+	<!-- 파일 정보 3타입 1개씩 download in servlet -->
+	<resultMap  id="selectFileResult" type="iq.kurd.pt.ng.vo.NgFileVO">
+		<result property="userId" column="USER_ID"/>
+		<result property="pageId" column="PAGE_ID"/>
+		<result property="fileUuid" column="FILE_UUID"/>
+		<result property="originFileNm" column="ORIGIN_FILE_NM"/>		
+		<result property="phyFileNm" column="PHY_FILE_NM"/>
+		<result property="phyUrlPath" column="PHY_URL_PATH"/>
+		<result property="ext" column="EXT"/>
+	</resultMap>
+    <select id="selectFile" parameterType="iq.kurd.pt.ng.vo.NgFileVO"  resultMap="selectFileResult">
+    	SELECT
+    	      USER_ID
+    	    , PAGE_ID
+    	    , FILE_UUID
+            , ORIGIN_FILE_NM
+			, PHY_FILE_NM
+			, PHY_URL_PATH
+			, EXT	 	
+        FROM
+            DB2COM.SAMPLE_NG_CM_FILE
+         WHERE 1 = 1
+         AND DEL_YN = 'N'
+		<if test="fileRefId != '' and fileRefId != null">
+			<![CDATA[AND FILE_REF_ID = #{fileRefId}]]>
+		</if>
+		<if test="fileUuid != '' and fileUuid != null">
+			<![CDATA[AND FILE_UUID = #{fileUuid}]]>
+		</if> 
+	</select>
+	
+<!-- 실제삭제함 -->
+	<delete id="deleteFile" parameterType="iq.kurd.pt.ng.vo.NgFileVO">
+		DELETE FROM DB2COM.SAMPLE_NG_CM_FILE		
+		  WHERE 1 = 1		  
+		<if test="userId != '' and userId != null">
+			<![CDATA[AND USER_ID = #{userId}]]>
+		</if>
+		<if test="pageId != '' and pageId != null">
+			<![CDATA[AND PAGE_ID = #{pageId}]]>
+		</if>
+		<if test="fileUuid != '' and fileUuid != null">
+			<![CDATA[AND FILE_UUID = #{fileUuid}]]>
+		</if>
+		<if test="fileRefId != '' and fileRefId != null">
+			<![CDATA[AND FILE_REF_ID = #{fileRefId}]]>
+		</if>
+	</delete>
+	
+<!-- 	Master part -->
+	<delete id="deleteFileFromBoard" parameterType="iq.kurd.pt.ng.vo.NgBoardVO">
+	<![CDATA[
+		DELETE FROM DB2COM.SAMPLE_NG_CM_FILE
+			WHERE FILE_REF_ID = #{fileRefId}			
+	]]>
+	</delete>
+		
+	<!-- 상세 화면에서 삭제할때 상태만 변경함 in servlet -->
+	<update id="updateDelYnField" parameterType="iq.kurd.pt.ng.vo.NgFileVO">
+		UPDATE DB2COM.SAMPLE_NG_CM_FILE
+		        SET DEL_YN = 'Y'
+		       WHERE 1=1
+		<if test="fileRefId != '' and fileRefId != null">
+			<![CDATA[AND FILE_REF_ID = #{fileRefId}]]>
+		</if>  
+		<if test="fileUuid != '' and fileUuid != null">
+			<![CDATA[AND FILE_UUID = #{fileUuid}]]>
+		</if>
+	
+	</update>
+	
+<!-- 업무쪽에서 최종 저장/송신할대 처리함 -->
+	<update id="updateFile" parameterType="iq.kurd.pt.ng.vo.NgBoardVO">
+	
+		UPDATE DB2COM.SAMPLE_NG_CM_FILE
+					SET STATUS = #{status},
+					    FILE_REF_ID = (SELECT FILE_REF_ID FROM SAMPLE_NG_BOARD WHERE TEND_NO = #{tendNo} AND TEND_SEQ = #{tendSeq} ),
+					    DEL_YN = 'N',
+						MOD_ID = #{fromUserId},
+					    MOD_DT = CURRENT_TIMESTAMP					    
+			WHERE USER_ID = #{fromUserId}
+			AND PAGE_ID = #{pageId}
+		  <if test="ngFileVOList.size != 0">
+			AND FILE_UUID IN
+	  	     <foreach collection="ngFileVOList" item="item" index="index" open="(" close=")" separator=",">
+	            #{item.fileUuid}
+	        </foreach>
+          </if>
+	</update>
+<!-- 업무쪽에서 상세화면에서 단순 송신할때 처리됨 -->
+	<update id="updateStatusFile" parameterType="iq.kurd.pt.ng.vo.NgBoardVO">	
+		UPDATE DB2COM.SAMPLE_NG_CM_FILE
+					SET STATUS = #{status},
+					    MOD_DT = CURRENT_TIMESTAMP					    
+			WHERE FILE_REF_ID = #{fileRefId}
+	</update>
+	
+</mapper>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iq.kurd.com.co.code.dao.CoCommonCdDAO">
+
+	<resultMap id="listCommonUpCodeResult" type="iq.kurd.com.co.code.vo.CoCommonCdVO">
+		<result property="upCd" column="UP_CD"/>
+	</resultMap>
+	<select id="listCommonUpCode" resultMap="listCommonUpCodeResult" >
+			<![CDATA[
+				SELECT DISTINCT UP_CD
+				FROM DB2COM.CO_COMMON_CD
+				WHERE
+			    	USE_YN = 'Y'
+			]]>	
+				<if test="upCd !=null and upCd !=''">
+			    AND UP_CD = #{upCd}
+			   </if>
+			<![CDATA[
+				ORDER BY UP_CD
+			]]>
+	</select>
+	
+	<resultMap id="listCommonCodeResult" type="iq.kurd.com.co.code.vo.CoCommonCdVO">
+		<result property="cd" column="CD"/>
+		<result property="cdNm" column="CD_NM"/>
+		<result property="cdExt" column="CD_EXT"/>
+		<result property="cdDesc" column="CD_DESC"/>
+	</resultMap>
+	
+	<select id="listCommonCode" parameterType="iq.kurd.com.co.code.vo.CoCommonCdVO" resultMap="listCommonCodeResult" >
+			<![CDATA[
+				SELECT
+					  CD
+		            , CD_NM
+		            , CD_EXT
+		            , CD_DESC 
+				FROM
+					DB2COM.CO_COMMON_CD
+			    WHERE
+			    	USE_YN = 'Y'
+			]]>
+			<if test="upCd !=null and upCd !=''">
+				AND UP_CD = #{upCd}
+			</if>
+			<if test="cdNm !=null and cdNm !=''">
+				AND  CD_NM LIKE '%' || UPPER(#{cdNm}) || '%'
+			</if>
+			<if test="cd !=null and cd !=''">
+				AND  CD = #{cd}
+			</if>
+			<if test="cdExt !=null and cdExt !=''">
+				AND  UPPER(CD_EXT) LIKE '%' || UPPER(#{cdExt}) || '%'
+			</if>
+			<if test = "excludeCodeArr != '' and excludeCodeArr != null">
+				AND CD NOT IN 
+				<foreach collection="excludeCodeArr" item="excludeCodeArr" open="(" separator="," close=")">
+					#{excludeCodeArr}
+				</foreach>
+			</if>
+			<if test="cdDesc !=null and cdDesc !=''">
+				AND CD_DESC = #{cdDesc}
+			</if>
+			<![CDATA[
+			  ORDER BY CD_ORD
+			]]>
+	</select>
+	
+	
+	<resultMap id="selectListPageCommonCodeResult" type="iq.kurd.com.co.code.vo.CoCommonCdVO">
+		<result property="upCd" column="UP_CD"/>
+		<result property="cd" column="CD"/>
+		<result property="cdNm" column="CD_NM"/>
+		<result property="cdExt" column="CD_EXT"/>
+	</resultMap>
+	<select id="selectListPageCommonCode" parameterType="iq.kurd.com.co.code.vo.CoCommonCdVO" resultMap="selectListPageCommonCodeResult" >
+			<![CDATA[
+			SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY CD_ORD) as ROW_SEQ, INNER_TABLE.* FROM(
+			
+			 SELECT UP_CD, CD,CD_ORD
+			               , CD_NM AS "CD_NM"
+			               , CD_EXT
+			      FROM DB2COM.CO_COMMON_CD
+			     WHERE UP_CD = #{upCd}
+				            AND USE_YN = 'Y'
+			]]>
+			<if test="cdNm !=null and cdNm !=''">
+				AND CD_NM LIKE UPPER(REPLACE(REPLACE(#{cdNm}, '_', '__'), '%', '_%')) || '%' {escape '_'}				
+			</if>
+			<if test="cd !=null and cd !=''">
+				AND  CD = #{cd}
+			</if>
+			<if test="cdExt !=null and cdExt !=''">
+				AND  UPPER(CD_EXT) LIKE '%' || UPPER(#{cdExt}) || '%'
+			</if>
+			<![CDATA[
+			  ORDER BY CD_ORD
+			) INNER_TABLE ) WHERE ROW_SEQ BETWEEN ((#{currentPageNo} - 1) * #{recordCountPerPage} + 1) AND (#{currentPageNo} * #{recordCountPerPage})
+			]]>
+	</select>
+	
+	
+	<resultMap id="selectListcommonCodeResult" type="iq.kurd.com.co.code.vo.CoCommonCdVO">
+		<result property="rownum" column="rownum"/>
+		<result property="upCd" column="UP_CD"/>
+		<result property="cd" column="CD"/>
+		<result property="cdOrd" column="CD_ORD"/>
+		<result property="cdNm" column="CD_NM"/>
+	</resultMap>
+	<select id="selectListcommonCode" parameterType="iq.kurd.com.co.code.vo.CoCommonCdVO" resultMap="selectListcommonCodeResult" >
+			<![CDATA[
+			SELECT *
+		  FROM (
+            SELECT ROWNUMBER() OVER() AS rownum
+                 , UP_CD
+				 , CD
+                 , CD_ORD
+			     , CD_NM 
+				  FROM DB2COM.CO_COMMON_CD
+				 WHERE 1 = 1  
+          AND USE_YN = 'Y' 
+			]]>
+			
+			<if test="upCd !=null and upCd !=''">
+			    AND UP_CD = #{upCd}
+			</if>
+			
+<!-- 			<if test="cdNm !=null and cdNm !=''"> -->
+<!-- 			    AND  UPPER(CD_NM) LIKE UPPER(REPLACE(REPLACE(#{cdNm}, '_', '__'), '%', '_%')) || '%' {escape '_'} -->
+<!-- 			</if> -->
+			
+<!-- 			popup처리중 화면엔 cdNm으로 정의하지만 실제 value는code라 아래와 같이 처리했음 -->
+			<if test="cdNm !=null and cdNm !=''">
+			    AND  CD = #{cdNm}
+			</if>
+			
+			<if test="cd !=null and cd !=''">
+			    AND  CD = #{cd}
+			</if>
+			<if test="cdExt !=null and cdExt !=''">
+				AND  UPPER(CD_EXT) LIKE '%' || UPPER(#{cdExt}) || '%'
+			</if>
+			<![CDATA[
+	         ORDER BY UP_CD )
+			 WHERE 1=1  
+			]]>
+	</select>
+	
+	<select id="selectCountCommonCode" parameterType="iq.kurd.com.co.code.vo.CoCommonCdVO" resultType="int">
+			<![CDATA[
+			SELECT count(*) AS CNT FROM (
+			SELECT CD
+			      FROM DB2COM.CO_COMMON_CD
+			     WHERE USE_YN = 'Y'
+			]]>
+			<if test="upCd !=null and upCd !=''">
+			    AND UP_CD = #{upCd}
+			</if>
+<!-- 			<if test="cdNm !=null and cdNm !=''"> -->
+<!-- 			    AND  UPPER(CD_NM) LIKE UPPER(REPLACE(REPLACE(#{cdNm}, '_', '__'), '%', '_%')) || '%' {escape '_'} -->
+<!-- 			</if> -->
+			
+<!-- 			popup처리중 화면엔 cdNm으로 정의하지만 실제 value는code라 아래와 같이 처리했음 -->
+			<if test="cdNm !=null and cdNm !=''">
+			    AND  CD = #{cdNm}
+			</if>
+			
+			<if test="cd !=null and cd !=''">
+			    AND  CD = #{cd}
+			</if>
+			<if test="cdExt !=null and cdExt !=''">
+				AND  UPPER(CD_EXT) LIKE '%' || UPPER(#{cdExt}) || '%'
+			</if>
+			<![CDATA[
+			
+			) tableAlias
+			]]>
+	</select>
+	
+	<resultMap id="selectCommonCodeNameResult" type="iq.kurd.com.co.code.vo.CoCommonCdVO">
+		<result property="cd" column="CD"/>
+		<result property="upCd" column="UP_CD"/>
+		<result property="cdNm" column="CD_NM"/>
+		<result property="cdExt" column="CD_EXT"/>
+	</resultMap>
+	<select id="selectCommonCodeName" parameterType="iq.kurd.com.co.code.vo.CoCommonCdVO" resultMap="selectCommonCodeNameResult" >
+		<![CDATA[
+			SELECT 
+				CD, UP_CD,
+			    CD_NM AS "CD_NM",
+			    CD_EXT
+			FROM 
+				DB2COM.CO_COMMON_CD
+			WHERE CD = #{cd}
+		]]>
+			<if test="upCd != null and upCd != ''">
+				AND UP_CD = #{upCd}
+			</if>
+			<if test="cdExt !=null and cdExt !=''">
+				AND  UPPER(CD_EXT) LIKE '%' || UPPER(#{cdExt}) || '%'
+			</if>
+	</select>
+	
+	
+	<resultMap id="selectListCommonCodeByCdsResult" type="iq.kurd.com.co.code.vo.CoCommonCdVO">
+		<result property="cd" column="CD"/>
+		<result property="cdNm" column="CD_NM"/>
+		<result property="cdExt" column="CD_EXT"/>
+	</resultMap>
+	<select id="selectListCommonCodeByCds" parameterType="map" resultMap="selectListCommonCodeByCdsResult">
+		SELECT
+			  CD
+			, UP_CD
+			, CD_NM AS "CD_NM"
+			, CD_EXT
+		FROM DB2COM.CO_COMMON_CD
+		WHERE USE_YN = 'Y'
+		AND CD IN
+		<foreach collection="cds" item="cd" open="(" separator="," close=")" >
+			#{cd}
+		</foreach>
+	</select>
+	
+	
+	<resultMap id="listCommonCodeByCdExtResult" type="iq.kurd.com.co.code.vo.CoCommonCdVO">
+		<result property="cd" column="CD"/>
+		<result property="upCd" column="UP_CD"/>
+		<result property="cdNm" column="CD_NM"/>
+		<result property="cdExt" column="CD_EXT"/>
+	</resultMap>
+	<select id="listCommonCodeByCdExt" parameterType="iq.kurd.com.co.code.vo.CoCommonCdVO" resultMap="listCommonCodeByCdExtResult" >
+			<![CDATA[
+			    SELECT CD, UP_CD
+			               , CD_NM 
+			               ,  CD_EXT
+			      FROM DB2COM.CO_COMMON_CD
+			     WHERE USE_YN = 'Y'
+			]]>
+			<if test="upCd !=null and upCd !=''">
+				AND UP_CD = #{upCd}
+			</if>
+			<if test="cdExt !=null and cdExt !=''">
+				AND  CD_EXT = #{cdExt}
+			</if>
+			<![CDATA[
+			  ORDER BY CD_ORD
+			]]>
+	</select>
+	
+</mapper>

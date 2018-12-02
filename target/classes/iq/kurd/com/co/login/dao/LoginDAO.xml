@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iq.kurd.com.co.login.dao.LoginDAO">
+	<select id="loginCheck" parameterType="iq.kurd.com.co.login.vo.LoginVo" resultType="iq.kurd.com.co.login.vo.JonepsActor">
+		SELECT A.USR_ID 					AS usrId
+		     , SUBSTR (A.USR_ID, 1, 1) 		AS usrType
+		     , A.MAST_NO 					AS mastNo
+		     , NVL(B.ORG_NM, C.SUPLR_NM)    AS mastNm
+		     , A.NID 						AS nid
+		     , A.CHRGR_NM 					AS chrgrNm
+		     , A.DEPT_NO 					AS deptNo
+		     , CASE WHEN A.DEPT_NO = '' THEN A.DEPT_NM ELSE (SELECT DEPT_NM FROM DB2USERUM.UM_ORG_DEPT_LST ZA WHERE A.DEPT_NO = ZA.DEPT_NO)  END AS deptNm
+		     , A.TELNO 						AS telno
+		     , A.FAXNO 						AS faxno
+		     , A.CELLNO 					AS cellno
+		     , A.EMAIL 						AS email
+		     , A.APROV_YN 					AS aprovYn
+		     , A.DEL_YN 					AS delYn
+		     , B.ORG_SE_CD 					AS orgSeCd
+		     , D.CD_NM 						AS orgSeCdNm
+		     , A.EMAIL_YN 					AS emailYn
+		     , A.SMS_YN 					AS smsYn
+		     , A.RECV_YN 					AS recvYn
+		  FROM DB2USERUM.UM_USR A
+		       LEFT OUTER JOIN DB2USERUM.UM_ORG B
+		          ON A.MAST_NO = B.ORG_NO
+		       LEFT OUTER JOIN DB2USERUM.UM_SUPLR C
+		          ON A.MAST_NO = C.NC_NO
+		       LEFT OUTER JOIN DB2COM.CO_COMMON_CD D
+		          ON B.ORG_SE_CD = D.CD AND D.UP_CD = 'UM0300'
+		       LEFT JOIN DB2USERUM.UM_CERTI E
+		          ON A.USR_ID = E.USR_ID AND TO_CHAR(CURRENT TIMESTAMP, 'YYYYMMDD') BETWEEN E.VAL_START_DT AND E.VAL_EXPIR_DT
+		 WHERE A.DEL_YN = 'N'
+		   AND E.DEL_YN = 'N'
+<!-- 		   AND A.USR_ID = #{usrId} -->
+		   AND E.SIGN_CERTI = #{signCerti}
+	</select>
+	
+	<select id="loginCheckById" parameterType="iq.kurd.com.co.login.vo.LoginVo" resultType="iq.kurd.com.co.login.vo.JonepsActor">
+		SELECT A.USR_ID 					AS usrId
+		     , SUBSTR (A.USR_ID, 1, 1) 		AS usrType
+		     , A.MAST_NO 					AS mastNo
+		     , NVL(B.ORG_NM, C.SUPLR_NM)    AS mastNm
+		     , A.NID 						AS nid
+		     , A.CHRGR_NM 					AS chrgrNm
+		     , A.DEPT_NO 					AS deptNo
+		     , CASE WHEN A.DEPT_NO = '' THEN A.DEPT_NM ELSE (SELECT DEPT_NM FROM DB2USERUM.UM_ORG_DEPT_LST ZA WHERE A.DEPT_NO = ZA.DEPT_NO)  END AS deptNm
+		     , A.TELNO 						AS telno
+		     , A.FAXNO 						AS faxno
+		     , A.CELLNO 					AS cellno
+		     , A.EMAIL 						AS email
+		     , A.APROV_YN 					AS aprovYn
+		     , A.DEL_YN 					AS delYn
+		     , B.ORG_SE_CD 					AS orgSeCd
+		     , D.CD_NM 						AS orgSeCdNm
+		     , A.EMAIL_YN 					AS emailYn
+		     , A.SMS_YN 					AS smsYn
+		     , A.RECV_YN 					AS recvYn
+		  FROM DB2USERUM.UM_USR A
+		       LEFT OUTER JOIN DB2USERUM.UM_ORG B
+		          ON A.MAST_NO = B.ORG_NO
+		       LEFT OUTER JOIN DB2USERUM.UM_SUPLR C
+		          ON A.MAST_NO = C.NC_NO
+		       LEFT OUTER JOIN DB2COM.CO_COMMON_CD D
+		          ON B.ORG_SE_CD = D.CD AND D.UP_CD = 'UM0300'
+		 WHERE A.DEL_YN = 'N'
+		   AND A.USR_ID = #{usrId}
+	</select>
+	
+	<select id="loginCheckCookie" parameterType="iq.kurd.com.co.login.vo.LoginVo" resultType="iq.kurd.com.co.login.vo.JonepsActor">
+		SELECT A.USR_ID 					AS usrId
+		     , SUBSTR (A.USR_ID, 1, 1) 		AS usrType
+		     , A.MAST_NO 					AS mastNo
+		     , NVL(B.ORG_NM, C.SUPLR_NM)    AS mastNm
+		     , A.NID 						AS nid
+		     , A.CHRGR_NM 					AS chrgrNm
+		     , A.DEPT_NO 					AS deptNo
+		     , CASE WHEN A.DEPT_NO = '' THEN A.DEPT_NM ELSE (SELECT DEPT_NM FROM DB2USERUM.UM_ORG_DEPT_LST ZA WHERE A.DEPT_NO = ZA.DEPT_NO)  END AS deptNm
+		     , A.TELNO 						AS telno
+		     , A.FAXNO 						AS faxno
+		     , A.CELLNO 					AS cellno
+		     , A.EMAIL 						AS email
+		     , A.APROV_YN 					AS aprovYn
+		     , A.DEL_YN 					AS delYn
+		     , B.ORG_SE_CD 					AS orgSeCd
+		     , D.CD_NM 						AS orgSeCdNm
+		     , A.EMAIL_YN 					AS emailYn
+		     , A.SMS_YN 					AS smsYn
+		     , A.RECV_YN 					AS recvYn
+		  FROM DB2USERUM.UM_USR A
+		       LEFT OUTER JOIN DB2USERUM.UM_ORG B
+		          ON A.MAST_NO = B.ORG_NO
+		       LEFT OUTER JOIN DB2USERUM.UM_SUPLR C
+		          ON A.MAST_NO = C.NC_NO
+		       LEFT OUTER JOIN DB2COM.CO_COMMON_CD D
+		          ON B.ORG_SE_CD = D.CD AND D.UP_CD = 'UM0300'
+		 WHERE A.DEL_YN = 'N'
+		   AND A.USR_ID = #{usrId}
+	</select>
+	
+	<select id="selectUsrAuthList" parameterType="iq.kurd.com.co.login.vo.LoginVo" resultType="iq.kurd.com.co.login.vo.UsrAuthoVo">
+		SELECT A.USR_ID AS usrId,
+		       A.AUTHO_CD AS authoCd,
+		       B.PE_YN AS peYn,
+		       B.DE_YN AS deYn,
+		       B.SP_YN AS spYn
+		  FROM DB2USERUM.UM_USR_AUTHO A
+		     , DB2USERUM.UM_AUTHO B
+		 <if test="signCerti != '' and signCerti != null">
+		     , DB2USERUM.UM_CERTI C
+		 </if>
+		 WHERE A.AUTHO_CD = B.AUTHO_CD
+		 <if test="usrId != '' and usrId != null">
+		   AND A.USR_ID = #{usrId}
+		 </if>
+		 <if test="signCerti != '' and signCerti != null">
+		   AND A.USR_ID = C.USR_ID
+		   AND C.SIGN_CERTI = #{signCerti}
+		   AND C.DEL_YN = 'N'
+		 </if> 
+		   AND EXISTS (SELECT NULL
+		          FROM DB2USERUM.UM_USR B
+		         WHERE A.USR_ID = B.USR_ID
+		           AND B.DEL_YN = 'N')
+	</select>
+	
+	<select id="selectUsrAuthListById" parameterType="iq.kurd.com.co.login.vo.LoginVo" resultType="iq.kurd.com.co.login.vo.UsrAuthoVo">
+		SELECT A.USR_ID AS usrId,
+		       A.AUTHO_CD AS authoCd,
+		       B.PE_YN AS peYn,
+		       B.DE_YN AS deYn,
+		       B.SP_YN AS spYn
+		  FROM DB2USERUM.UM_USR_AUTHO A
+		     , DB2USERUM.UM_AUTHO B
+		 WHERE A.USR_ID = #{usrId}
+		   AND A.AUTHO_CD = B.AUTHO_CD
+		   AND EXISTS (SELECT NULL
+		          FROM DB2USERUM.UM_USR D
+		         WHERE A.USR_ID = D.USR_ID
+		           AND D.DEL_YN = 'N')
+	</select>
+	
+	<update id="updateUsrLoginDt" parameterType="iq.kurd.com.co.login.vo.LoginVo">
+		UPDATE DB2USERUM.UM_CERTI A
+		   SET A.LOGIN_DT = CURRENT TIMESTAMP
+		 WHERE A.SIGN_CERTI = #{signCerti}
+<!-- 		   AND A.USR_ID = #{usrId} -->
+		   AND TO_CHAR(CURRENT TIMESTAMP, 'YYYYMMDD') BETWEEN A.VAL_START_DT AND A.VAL_EXPIR_DT
+	</update>
+</mapper>

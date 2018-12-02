@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="iq.kurd.com.co.auth.dao.CoReqAuthDAO">
+
+	<resultMap id="selectReqAuthResult" type="iq.kurd.com.co.auth.vo.CoReqAuthQVO">
+		<result property="menuId" column="MENU_ID"/>
+	</resultMap>
+	<select id="selectReqAuth" parameterType="iq.kurd.com.co.auth.vo.CoReqAuthSVO" resultMap="selectReqAuthResult" >
+			<![CDATA[
+			               SELECT MENU_ID
+							FROM PORTAL.PT_ROLE_MENU_ALLOT
+							WHERE MENU_ID = (
+								SELECT MENU_ID
+								FROM  PORTAL.PT_MENU 
+							    WHERE 1 = 1 /* MENU_CD = menuClCd */ 
+			                       AND RSC_URL = #{reqUrl}  
+			                       AND MENU_LVL = 4
+			                       AND ROWNUM = 1)
+			]]>
+						<if test = "authCdArr != null and authCdArr != ''">
+								AND ROLE_ID IN
+							<foreach collection="authCdArr" item="cdArr" index="index" 
+								open="(" separator="," close=")">
+								#{cdArr}
+							</foreach>
+						</if>
+								
+			<![CDATA[
+			
+			]]>
+	</select>
+	<resultMap id="selectListReqAuthResult" type="iq.kurd.com.co.auth.vo.CoReqAuthQVO">
+	</resultMap>
+	<select id="selectListReqAuth" parameterType="iq.kurd.com.co.auth.vo.CoReqAuthSVO" resultMap="selectListReqAuthResult" >
+			<![CDATA[
+			               SELECT MENU_ID
+							FROM PORTAL.PT_ROLE_MENU_ALLOT
+							WHERE MENU_ID IN (
+								SELECT MENU_ID
+								FROM  PORTAL.PT_MENU 
+							    WHERE 1 = 1 /* MENU_CD = menuClCd */ 
+			                       AND RSC_URL = #{reqUrl}  
+			                       AND MENU_LVL = 4)
+			]]>
+						<if test = "authCdArr != null and authCdArr != ''">
+								AND ROLE_ID IN
+								<foreach collection="authCdArr"  item="cdArr" index="index" 
+									open="(" separator="," close=")">
+									#{cdArr}
+								</foreach>		
+						</if>	
+	</select>
+</mapper>

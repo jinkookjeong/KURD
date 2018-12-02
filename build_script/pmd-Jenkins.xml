@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="pmd task" default="all" basedir=".">
+  <property file="./jenkinsbuild.properties"/>
+  <!-- for pmd -->
+
+	<path id="pmd.classpath" >
+    	<fileset dir="${pmd.lib.dir}/lib" >
+		  <include name='*.jar'/>
+		</fileset>
+  </path>
+ 
+	<target name="all" depends="init, pmd"/>
+
+  <target name="init">
+	    <tstamp>
+	      <format property="DSTAMP" pattern="yyyyMMdd"/>
+	      <format property="TSTAMP" pattern="HH"/>
+	    </tstamp>
+    <echo message="FILE COUNT START"/>
+
+    <resourcecount property="pdpmes">
+      <fileset dir="${java.src.dir}">
+    	<include name="**/*.java"/>
+      </fileset>
+    </resourcecount>
+    <echo message="pdpmes : ${pdpmes}"/>
+    <echo message="FILE COUNT END"/>
+  </target>
+
+  <target name="pmd" depends="init">
+      <mkdir dir="${report.path}/${DSTAMP}"/>
+     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
+     <pmd shortFilenames="false" rulesetfiles="${build.workspace}/build_script/EgovInspectionRules_kor-3.5.xml" >
+      <formatter type="csv" toFile="${report.path}/${DSTAMP}/pmd_report-${DSTAMP}${TSTAMP}.csv"/>
+      <formatter type="xml" toFile="${report.path}/pmd.xml"/>
+      <formatter type="xml" toFile="${report.path}/${DSTAMP}/pmd-${DSTAMP}${TSTAMP}.xml"/>
+      <formatter type="html" toFile="${report.path}/${DSTAMP}/pmd_report-${DSTAMP}${TSTAMP}.html"/>
+	    <fileset dir="${java.src.dir}">
+	    	<include name="**/*.java"/>
+      </fileset>
+     </pmd>
+    </target>
+
+	<!-- Developer Mapping -->
+  <target name="devmap">
+		<echo>"ECHO:: Developer Mapping..."</echo>
+		<java classname="net.sourceforge.pmd.renderers.NEISDeveloperMapping" failonerror = "true" fork="true" timeout="360000">
+			<arg value="${report.path}/${DSTAMP}/pmd_report-${DSTAMP}${TSTAMP}.csv" />
+			<classpath>
+				<path refid="pmd.classpath" />
+			</classpath>
+		</java>
+		<echo>"Developer Mapping Ends..."</echo>
+	</target>
+
+</project>

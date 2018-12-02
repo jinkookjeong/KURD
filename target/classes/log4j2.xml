@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+
+<!-- Author:  Crunchify.com  -->
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg%n" />
+		</Console>
+		<RollingFile name="file" fileName="d:/kurd.log" filePattern="d:/kurd.%i.%d{yyyy-MM-dd}.log">
+		   <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		   <Policies>
+		    <SizeBasedTriggeringPolicy size="10MB" /> <!-- 이 용량이 초과되면 아래 DefaultRolloverStrategy 정책만큼 넘버링 할거다. -->
+		   </Policies>
+		    <DefaultRolloverStrategy max="1000" fileIndex="min" />
+         </RollingFile>
+
+<!-- 			<JDBC name="databaseAppender" tableName="DB2COM.LOGGING_ERROR" > -->
+<!-- 		      <ConnectionFactory class="iq.kurd.com.ConnectionFactory" method="getDatabaseConnection" /> -->
+<!-- 		      <Column name="EVENT_ID" literal="LOGGING.APPLICATION_LOG_SEQUENCE.NEXTVAL" /> -->
+<!-- 		      <Column name="LOG_DATE" isEventTimestamp="true" /> -->
+<!-- 		      <Column name="LOG_LEVEL" pattern="%level"  isUnicode="false"/> -->
+<!-- 		      <Column name="LOCATION" pattern="%logger"  isUnicode="false"/> -->
+<!-- 		      <Column name="MESSAGE" pattern="%message"  isUnicode="false"/> -->
+<!-- 		      <Column name="THROWABLE" pattern="%throwable{short}"  isUnicode="false"/> -->
+<!-- 		    </JDBC> -->
+
+	</Appenders>
+    
+	<Loggers>
+		<Root level="info">
+		<!-- <Root level="FATAL"> -->
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="file" />
+		</Root>
+
+<!-- 		<logger name="logging.simple.jdbcLogger" level="error">
+	        <level value="error"/>
+	        <appender-ref ref="jdbcAppender"/>
+	    </logger> -->
+
+		<Logger name="java.sql" level="INFO" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>
+        <Logger name="egovframework" level="INFO" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>
+          <!-- log SQL with timing information, post execution -->
+        <Logger name="jdbc.sqltiming" level="INFO" additivity="false">
+            <AppenderRef ref="Console" />
+		</Logger>
+
+        <Logger name="kr.co.ex.nebid" level="INFO" additivity="false">
+        	<AppenderRef ref="Console" />
+	       	<AppenderRef ref="file" />
+		</Logger>
+		
+<!--         <Logger name="iq.kurd.common" level="error" additivity="false"> -->
+<!--         	<AppenderRef ref="Console" /> -->
+<!-- 	        <appender-ref ref="databaseAppender"/> -->
+<!-- 	       	<AppenderRef ref="file" /> -->
+<!-- 		</Logger> -->
+
+		<Logger name="java.sql.ResultSet" level="INFO" additivity="false" >
+			<AppenderRef ref="Console" />
+		</Logger>
+
+		<!-- mybatis vo 에러 출력  table data console 출력 제거 Start -->
+		<Logger name="org.springframework.web.servlet" level="DEBUG" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="jdbc.resultsettable" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="jdbc.audit" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="jdbc.resultset" level="WARN" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		<!-- end -->
+		
+	</Loggers>
+</Configuration>

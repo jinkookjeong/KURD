@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="iq.kurd.com.popup.dao.CmOrgInfoDAO">
+
+	<select id="selectOrgInfoListCnt" parameterType="iq.kurd.com.popup.vo.CmOrgInfoVO" resultType="int">
+		<![CDATA[
+			SELECT 
+			   COUNT(1) AS CNT
+			FROM DB2COM.ORG_INFO
+			WHERE 1 = 1
+		]]>
+		<if test="orgNo != '' and orgNo != null ">
+				 <![CDATA[
+				AND UPPER(ORG_NO)  LIKE  UPPER( CONCAT('%',#{orgNo},'%')) 
+				]]>
+		</if>
+		<if test="distrctCd != '' and distrctCd != null ">
+				 <![CDATA[
+				AND UPPER(DISTRCT_CD)  LIKE  UPPER( CONCAT('%',#{distrctCd},'%')) 
+				]]>
+		</if>		
+		<if test="orgNm != '' and orgNm != null ">
+				 <![CDATA[
+				AND ( UPPER(ORG_NM) LIKE UPPER(CONCAT('%',#{orgNm},'%'))
+				    OR UPPER(ORG_EN_NM) LIKE UPPER(CONCAT('%',#{orgEnNm},'%'))
+				    OR UPPER(ABBR_NM) LIKE UPPER(CONCAT('%',#{abbrNm},'%'))
+				    )
+				]]>
+		</if>
+	</select>
+
+	<resultMap id="selectOrgInfoListResult" type="iq.kurd.com.popup.vo.CmOrgInfoVO">
+	    <result property="orgNo" column="ORG_NO" />
+		<result property="distrctCd" column="DISTRCT_CD" />
+		<result property="orgNm" column="ORG_NM" />
+		<result property="orgEnNm" column="ORG_EN_NM" />
+		<result property="abbrNm" column="ABBR_NM" />
+		<result property="rownum" column="ROWNUM" />
+	</resultMap>
+	<select id="selectOrgInfoList" parameterType="iq.kurd.com.popup.vo.CmOrgInfoVO" resultMap="selectOrgInfoListResult">
+	<![CDATA[
+	    SELECT T.* FROM (
+		   SELECT
+			   ORG_NO,
+			   DISTRCT_CD,
+			   ORG_NM,		
+			   ORG_EN_NM,
+			   ABBR_NM,
+			   @ROWNUM := @ROWNUM + 1 AS ROWNUM 			   
+		   FROM DB2COM.ORG_INFO,
+		   (SELECT @ROWNUM := 0) R 
+		  WHERE 1=1
+		  ]]>
+		 <if test="orgNo != '' and orgNo != null ">
+		  <![CDATA[
+			AND UPPER(ORG_NO) LIKE  UPPER( CONCAT('%',#{orgNo},'%')) 
+		  ]]>
+		</if>
+		<if test="distrctCd != '' and distrctCd != null ">
+		  <![CDATA[
+			AND UPPER(DISTRCT_CD) LIKE  UPPER( CONCAT('%',#{distrctCd},'%')) 
+		  ]]>
+		</if>		
+		<if test="orgNm != '' and orgNm != null ">
+	      <![CDATA[
+			AND ( UPPER(ORG_NM) LIKE UPPER( CONCAT('%',#{orgNm},'%'))
+			    OR UPPER(ORG_EN_NM) LIKE UPPER( CONCAT('%',#{orgNm},'%'))
+			    OR UPPER(ABBR_NM) LIKE UPPER( CONCAT('%',#{orgNm},'%'))
+			    )
+	      ]]>
+		</if>
+		<![CDATA[
+			  ORDER BY ORG_NM ASC
+		]]>
+		) T		
+	</select>
+	
+	<resultMap id="selectOrgUpCdListResult" type="iq.kurd.com.popup.vo.CmOrgInfoVO">
+	    <result property="orgNo" column="ORG_NO" />
+		<result property="orgNm" column="ORG_NM" />				
+	</resultMap>
+	<select id="selectOrgUpCdList" parameterType="iq.kurd.com.popup.vo.CmOrgInfoVO" resultMap="selectOrgUpCdListResult">
+	   SELECT
+		   ORG_NO,		   
+		   ORG_NM		
+	   FROM DB2COM.ORG_INFO		
+	       WHERE ORG_NO LIKE '____00000'
+	</select>
+	
+	<resultMap id="selectOrgCdMidListResult" type="iq.kurd.com.popup.vo.CmOrgInfoVO">
+	    <result property="orgNo" column="ORG_NO" />
+		<result property="orgNm" column="ORG_NM" />				
+	</resultMap>
+	<select id="selectOrgMidCdList" parameterType="iq.kurd.com.popup.vo.CmOrgInfoVO" resultMap="selectOrgCdMidListResult">
+	   SELECT
+		   ORG_NO,		   
+		   ORG_NM		
+	   FROM DB2COM.ORG_INFO		
+	  	   WHERE ORG_NO LIKE CONCAT(SUBSTR(#{orgNo}, 1, 4), '%')
+		   AND ORG_NO != #{orgNo}	 		   
+	</select>
+	
+</mapper>

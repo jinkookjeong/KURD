@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"        
+             xmlns:security="http://www.springframework.org/schema/security"     
+             xsi:schemaLocation="
+        http://www.springframework.org/schema/security 
+        http://www.springframework.org/schema/security/spring-security.xsd
+       	http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.1.xsd
+	    http://www.springframework.org/schema/beans        
+        http://www.springframework.org/schema/beans/spring-beans.xsd ">
+		           
+    <context:annotation-config />
+    <context:component-scan base-package="iq.kurd"/>
+    <global-method-security pre-post-annotations="enabled" />
+       
+    <http pattern="/cm/public/**" security="none" />
+	<http pattern="/css/**" security="none" />
+	<http pattern="/js/**" security="none" />
+	<http pattern="/images/**" security="none" />
+
+	<http use-expressions="true" auto-config="true" >
+		<intercept-url pattern="/*"  access="permitAll" />
+		<intercept-url pattern="/pt/ng/**"  access="hasAnyRole('ADMIN','USER')" />
+	    <form-login login-processing-url="/loginProcess.do" 
+					authentication-success-handler-ref="loginSuccessHandler" 
+					authentication-failure-handler-ref="loginFailHandler"
+					password-parameter="signCerti" 
+					username-parameter="userId" 
+					login-page="/um/loginForm.do"/>
+		<csrf disabled="false" />		
+		<security:access-denied-handler error-page="/WEB-INF/jsp/com/exception/accessDeny.jsp" />
+<!-- 		<logout	success-handler-ref="logoutHandler"  -->
+<!-- handler는 아래 서비스일때 쓰고 대신 url.do는 구현안해도 됨  -->
+		<logout invalidate-session="true" 
+ 				logout-url="/um/logout.do" /> 
+	</http>
+  
+	<beans:bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
+	<beans:bean class="iq.kurd.com.login.hdler.LoginSuccHandler" id="loginSuccessHandler"/>
+	<beans:bean class="iq.kurd.com.login.hdler.LoginFailHandler" id="loginFailHandler"/>
+	<beans:bean class="iq.kurd.com.login.hdler.LogoutHandler" id="logoutHandler"/>
+	
+	<beans:bean class="iq.kurd.com.login.pvider.CustomAuthenticationProvider" id="customAuthenticationProvider"/>
+	<authentication-manager>
+	  <authentication-provider ref="customAuthenticationProvider"/>
+	 </authentication-manager>
+	
+<!-- 	<beans:bean id="KurdUserDetailsService" class="iq.kurd.com.login.svc.UserDetailsSvcImpl"/>   -->
+<!-- 	<security:authentication-manager> -->
+<!-- 	    <security:authentication-provider user-service-ref="KurdUserDetailsService" > -->
+<!-- 	        <security:password-encoder ref="passwordEncoder" />	         -->
+<!-- 	    </security:authentication-provider> -->
+<!-- 	</security:authentication-manager> -->
+<!-- 	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" /> -->
+         
+</beans:beans>
