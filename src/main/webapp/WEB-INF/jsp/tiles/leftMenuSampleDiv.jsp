@@ -16,8 +16,8 @@ ${leftMenuStr}
 						<li><a href="/pt/sample/commoncode/ComnOrganizationList.do"><span>기관 조회 페이지</span></a></li>
 						<li><a href="/pt/sample/commoncode/ComnTestList.do"><span>공통코드 조회 및 캘린더</span></a></li>
 						<li><a href="/pt/sample/board/SelectSampleBoardList.do"><span>샘플게시판</span></a></li>
-						<li><a href="/pt/sample/ExceptionTest.do" target="ResultFrame"><span>팝업 예외 테스트</span></a></li>
-						<li><a href="/pt/sample/MessageTest.do" target="ResultFrame"><span>등록 메세지 테스트 </span></a></li>
+<!-- 						<li><a href="/pt/sample/ExceptionTest.do" target="ResultFrame"><span>팝업 예외 테스트</span></a></li> -->
+<!-- 						<li><a href="/pt/sample/MessageTest.do" target="ResultFrame"><span>등록 메세지 테스트 </span></a></li> -->
 						<li><a href="/document/Java_Util.xlsx"><span>자바 유틸 함수 메뉴얼</span></a></li>
 						<li><a href="/document/JavaScript_Util.xlsx"><span>자바스크립트 유틸 함수 메뉴얼</span></a></li>
 						</ul>

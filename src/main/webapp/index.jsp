@@ -62,7 +62,7 @@ body {
 		</sec:authorize>
 		<br><br>
 		<a href="/pt/ng/sample/boardList.do">▷ Go Sample AngularJS Board page(WAS1)</a><br>
-		<a href="http://localhost:8888/pt/ng/sample/boardList.do">▷   Go Sample AngularJS Board page(WAS2)</a>
+		<a href="https://localhost:8443/pt/ng/sample/boardList.do">▷   Go Sample AngularJS Board page(WAS2)</a>
       </div>
    </div>
 </body>

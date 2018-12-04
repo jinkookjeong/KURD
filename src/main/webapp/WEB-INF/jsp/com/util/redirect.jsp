@@ -9,14 +9,18 @@
 <script type="text/javascript" language="javascript">
 function bodyOnload(){
   	var emptyForm = document.getElementById("emptyForm");
-<%--   	emptyForm.action = "<%= request.getHeader("referer") == null ? "/" : request.getHeader("referer")  %>"; --%>
-	emptyForm.action = "/";
+  	 //alert("<%= request.getHeader("org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE") == null ? "/" : request.getHeader("org.springframework.web.servlet.i18n.CookieLocaleResolver.LOCALE")  %>");
+  	
+   	emptyForm.action = "<%= request.getHeader("referer") == null ? "/" : request.getHeader("referer")  %>";
+   	//alert(emptyForm.action);
+	//emptyForm.action = "/";
   	emptyForm.submit();
 }
 </script>
 </head>
 <body onload="bodyOnload();">
 <form id="emptyForm" method="post">
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form>
 </body>
 </html>

@@ -56,8 +56,8 @@ body {
 			<a href="/um/logout.do" class="g_menu"><span>Logout</span></a>
 		</sec:authorize>
 		<h2>SpringMVC 5 + Srping Security 5 + REST + AngularJS</h2>
-        <a href="/pt/ng/sample/board.do">▷ Go Sample AngularJS Board page(WAS1)</a><br>
-		<a href="http://localhost:8888/pt/ng/sample/board.do">▷   Go Sample AngularJS Board page(WAS2)</a>
+        <a href="/pt/ng/sample/boardList.do">▷ Go Sample AngularJS Board page(WAS1)</a><br>
+		<a href="https://localhost:8443/pt/ng/sample/boardList.do">▷   Go Sample AngularJS Board page(WAS2)</a>
       </div>
     </body>
 </html>

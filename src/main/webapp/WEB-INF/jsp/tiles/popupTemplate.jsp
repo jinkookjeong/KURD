@@ -14,8 +14,8 @@
         </div>
     </div>
     
-	<iframe name="popupResultFrame" height="0" width="0" frameborder="0">
-	</iframe>
+<!-- 	<iframe name="popupResultFrame" height="0" width="0" frameborder="0"> -->
+<!-- 	</iframe> -->
 	<!-- alert 창 영역 --> 
     <div class="layer" id="alertLayer" style="display: none;">
         <div class="layer_con" id="layer_con_body" style="top: 20%;">

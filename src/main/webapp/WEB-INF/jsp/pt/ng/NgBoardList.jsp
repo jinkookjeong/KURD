@@ -3,6 +3,7 @@
 <%-- <meta name="_csrf" content="${_csrf.token}"/> --%>
 <%-- <meta name="_csrf_header" content="${_csrf.headerName}"/> --%>
 
+
 <script type="text/javaScript" language="javascript"> 
 
 // var token = $("meta[name='_csrf']").attr("content");
@@ -31,7 +32,7 @@ app.controller("ngBoardListController", function($scope, $http, $timeout, $windo
       {count: '50', name: '50 Views'},
       {count: '100', name: '100 Views'}
     ],
-    recordedPage: {count:'10'} //This sets the default value of the select in the ui
+    recordedPage: {count:'5'} //This sets the default value of the select in the ui
  };
   
   //document status(Save/Send)
@@ -183,7 +184,9 @@ app.config(function($mdDateLocaleProvider) {
 
 <div id="ngBoardListApp" ng-app="ngBoardListApp" ng-controller="ngBoardListController">
 
-<h4 class="con_tit"><span>Sample(Spring MVC 5 + Spring Security 5 + REST + AngularJS)</h4> 
+<h4 class="con_tit"><span><spring:message code="ng.board.list.title" /></span></h4> 
+
+
 <!--  <span ng-click="logout()" class="al_r">Logout</span></span> -->
 	<div class="table_area1"> 
 		<form:form name="frm" method="post" accept-charset="utf-8">
@@ -239,7 +242,7 @@ app.config(function($mdDateLocaleProvider) {
 <!--             						<a id="popupSymImg" tabindex="-1" ng-click="openChildWindow();"> Call Child Window </a> -->
 <!--             						<input type="text" id="searchPeNo" style="width:30%" name="searchPeNo" value="" /> -->
             							
-            							<input type="text"class="input-lg" size="36px" name="id" ng-model="ngBoardVO.id" placeholder="Org search...">
+            							<input type="text"class="input-lg" size="43px" name="id" ng-model="ngBoardVO.id" placeholder="Org search...">
 					                   	<div class="input-group-btn">
 					                    	<button class="btn btn-default" type="button" ng-click="searchOrgPopup();">
 										         <i class="glyphicon glyphicon-search"></i>
@@ -263,32 +266,18 @@ app.config(function($mdDateLocaleProvider) {
 						     <input type="textFilter" id="searchBox" name="searchBox"  placeholder="You can filter in the sarched data..."  class="form-control input-sm" ng-model="searchBox" />				   	
 						  </div>
 					   </td>
-						 
 					  <th scope="row"><div><div>Date</div></div></th>
 		     	      <td>
 				      <div>
 					   <md-content>
-				        <md-datepicker ng-model="fromDate" name="fromDate" placeholder="From date" name="startdate" md-min-date="minDate" md-max-date="maxDate" required></md-datepicker>
-				        <md-datepicker ng-model="toDate" name="toDate" placeholder="To date" name="enddate" md-min-date="minDate" md-max-date="maxDate" required></md-datepicker>
-<!-- 				      <div ng-messages="Frm.fromDate.$error" style="color:Red"> -->
-<!-- 				        <div ng-message="valid">From date is not valid!</div> -->
-<!-- 				        <div ng-message="required">This field is required</div> -->
-<!-- 				        <div ng-message="maxdate">Date is too late!</div> -->
-<!-- 				        <div ng-message="mindate">Date is too early!</div> -->
-<!-- 				      </div>		 -->
-<!-- 				      <div ng-messages="Frm.toDate.$error" style="color:Red"> -->
-<!-- 				        <div ng-message="valid">To date is not valid!</div> -->
-<!-- 				        <div ng-message="required">This field is required</div> -->
-<!-- 				        <div ng-message="maxdate">Date is too late!</div> -->
-<!-- 				        <div ng-message="mindate">Date is too early!</div> -->
-<!-- 				      </div>				       -->
+					     <md-datepicker dir="${pageContext.response.locale}" ng-model="fromDate" name="fromDate" placeholder="From date" name="startdate" md-min-date="minDate" md-max-date="maxDate" required></md-datepicker>
+					     <md-datepicker dir="${pageContext.response.locale}" ng-model="toDate" name="toDate" placeholder="To date" name="enddate" md-min-date="minDate" md-max-date="maxDate" required></md-datepicker>
 				     </md-content>
 				    </div>
 				   </td>				 
 	             </tr>
 			</tbody>	
 			</table>
-			
 				<div class="float_r">
 			     	 <label for="total" style="color:Red">Total({{ngBoardVO.totalRecordCount}})</label>   
 					 <select name="recordedPage" id="recordedPage"

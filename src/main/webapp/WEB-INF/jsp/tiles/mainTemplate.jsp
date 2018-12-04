@@ -14,7 +14,7 @@
 		<div id="container">
 			<tiles:insertAttribute name="body" />
 		</div>
-		<iframe name="ResultFrame" height="0" width="0"   style="border: 0px;" ></iframe>
+<!-- 		<iframe name="ResultFrame" height="0" width="0"   style="border: 0px;" ></iframe> -->
 		<div id="footer">
 			<tiles:insertAttribute name="footerDiv" />
 		</div>

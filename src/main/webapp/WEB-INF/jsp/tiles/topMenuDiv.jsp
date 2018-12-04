@@ -32,8 +32,10 @@
 			</c:if>
 		</c:forEach>
 				<span class="gnb_lang">
-					<a href="${partUrl}/setLocale.do?lang=en" class="eng"><span class="blind">english</span></a>
-					<a href="${partUrl}/setLocale.do?lang=ar" class="koi"><span class="blind">Arab</span></a>
+					<a href="/setLocale.do?lang=ku" class="kor"><span class="blind">Ku</span></a>
+					<a href="/setLocale.do?lang=en" class="eng"><span class="blind">En</span></a>
+					<a href="/setLocale.do?lang=ko" class="kor"><span class="blind">Ko</span></a>
+					<a href="/setLocale.do?lang=ar" class="eng"><span class="blind">Ar</span></a>
 				</span>
 			</div>
 		</div>
