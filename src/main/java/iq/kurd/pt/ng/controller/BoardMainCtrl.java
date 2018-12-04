@@ -1,16 +1,20 @@
 package iq.kurd.pt.ng.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.google.gson.Gson;
 
@@ -29,6 +33,9 @@ public class BoardMainCtrl extends AbstractCtrl{
 	@Resource(name="coCommonCdService")
 	CoCommonCdService coCommonCdService;
 	
+	@Autowired
+	private MessageSource messgeSource;
+	
 	
 	//로그인 테스트
 	@RequestMapping(value = "/page.do")
@@ -43,8 +50,11 @@ public class BoardMainCtrl extends AbstractCtrl{
 	@RequestMapping(value = "/pt/ng/sample/boardList.do")
 	public String boardList(HttpServletRequest request, HttpServletResponse response, 
 			ModelMap model) throws Exception {
-
-		log.info("Wellcome page mapping!");
+		
+		Locale loc = RequestContextUtils.getLocale(request);
+		log.info("locale: "+loc.getLanguage());
+		
+		log.info("Wellcome page mapping! ");
 		return "NgBoardList.ng";
 	}
 	
